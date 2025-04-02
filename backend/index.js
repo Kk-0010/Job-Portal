@@ -19,6 +19,7 @@ const _dirname = path.resolve();
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 app.use(cookieParser());
+
 const corsOptions = {
     origin:'http://localhost:5173',
     credentials:true
@@ -40,6 +41,12 @@ app.use("/api/v1/application", applicationRoute);
 //     res.sendFile(path.resolve(_dirname, "frontend", "dist", "index.html"))
 // });
 
+app.use(express.static(path.join(_dirname, "Frontend", "dist")));
+
+// Catch-all route for React app
+app.get("*", (_, res) => {
+  res.sendFile(path.resolve(_dirname, "Frontend", "dist", "index.html"));
+});
 
 app.listen(PORT,()=>{
     connectDB();
